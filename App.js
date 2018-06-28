@@ -7,13 +7,40 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      items: []
+    };
+    this.handleAddItem = this.handleAddItem.bind(this);
+  }
+
+  handleAddItem() {
+    if (!this.state.value) return;
+    const newItems = [
+      ...this.state.items,
+      {
+        key: Date.now(),
+        text: this.state.value,
+        complete: false
+      }
+    ];
+    this.setState({
+      items: newItems,
+      value: ""
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Header />
-        <View style={styles.content}>
-        
-        </View>
+        <Header
+          value={this.state.value}
+          onAddItem={this.handleAddItem}
+          onChange={value => this.setState({ value })}
+        />
+        <View style={styles.content} />
         <Footer />
       </View>
     );
