@@ -2,7 +2,7 @@
  * ToDo React Native App
  */
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View, ListView, Keyboard } from "react-native";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -11,9 +11,11 @@ export default class App extends Component {
     super(props);
     this.state = {
       value: "",
-      items: []
+      items: [],
+      allComplete: false
     };
     this.handleAddItem = this.handleAddItem.bind(this);
+    this.handleToggleAllComplete = this.handleToggleAllComplete.bind(this);
   }
 
   handleAddItem() {
@@ -32,6 +34,18 @@ export default class App extends Component {
     });
   }
 
+  handleToggleAllComplete() {
+    const isComplete = !this.state.allComplete;
+    const newItems = this.state.items.map(item => ({
+      ...item,
+      complete: isComplete
+    }));
+    this.setState({
+      items: newItems,
+      allComplete: isComplete
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -39,6 +53,7 @@ export default class App extends Component {
           value={this.state.value}
           onAddItem={this.handleAddItem}
           onChange={value => this.setState({ value })}
+          onToggleAllComplete={this.handleToggleAllComplete}
         />
         <View style={styles.content} />
         <Footer />
